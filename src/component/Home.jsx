@@ -34,10 +34,10 @@ const Home = () => {
                     <button className="bg-cyan-700 text-white py-3 rounded-full hover:bg-cyan-800 transition">
                         Administrator Login
                     </button> */}
-                    <button onClick={()=>navigate('/login')} type="button" className="mt-8 w-full max-w-80 h-11 rounded-full text-white text-sm bg-cyan-700 hover:opacity-90 transition-opacity">
+                    <button onClick={() => navigate('/login')} type="button" className="mt-8 w-full max-w-80 h-11 rounded-full text-white text-sm bg-cyan-700 hover:opacity-90 transition-opacity">
                         User Login
                     </button>
-                    <button onClick={()=>navigate('/login')} type="button" className="mt-8 w-full max-w-80 h-11 rounded-full text-white text-sm bg-cyan-700 hover:opacity-90 transition-opacity">
+                    <button onClick={() => navigate('/login')} type="button" className="mt-8 w-full max-w-80 h-11 rounded-full text-white text-sm bg-cyan-700 hover:opacity-90 transition-opacity">
                         Admin Login
                     </button>
                 </div>
