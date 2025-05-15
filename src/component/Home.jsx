@@ -28,12 +28,6 @@ const Home = () => {
                 <h1 className="text-3xl font-semibold text-white mb-10">C360</h1>
 
                 <div className="flex flex-col space-y-4 w-1/2">
-                    {/* <button className="bg-cyan-700 text-white py-3 rounded-full hover:bg-cyan-800 transition">
-                        User Login
-                    </button>
-                    <button className="bg-cyan-700 text-white py-3 rounded-full hover:bg-cyan-800 transition">
-                        Administrator Login
-                    </button> */}
                     <button onClick={() => navigate('/login')} type="button" className="mt-8 w-full max-w-80 h-11 rounded-full text-white text-sm bg-cyan-700 hover:opacity-90 transition-opacity">
                         User Login
                     </button>
