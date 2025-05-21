@@ -1,59 +1,151 @@
-import React from 'react'
+import React, { useState } from 'react';
 import Dvaralogo from '../assets/dvaralogo.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+
+import NSDLSubTabs from '../component/Nsdlsubtab';
+import MoneyAddedEMDFloat from '../component/MoneyAddedEMDFloat';
+import NSDLInstakitsForm from './NSDLInstakitsForm'
+
+
+import { addNsdlFloat } from '../api/apiNSDL';
+
+
+
+// ----------------- Main Dashboard -----------------
 const Dashboard = () => {
+    const crm_user_mobile = localStorage.getItem('crm_user_mobile');
+    const [activeTab, setActiveTab] = useState('nsdl');
+    const [activeNsdlSubTab, setActiveNsdlSubTab] = useState('moneyAdded');
 
-    const dashboardicon = (
-        <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" />
-        </svg>
-    );
+    const [amount, setAmount] = useState('');
+    const [refNo, setRefNo] = useState('');
+    const [instrumentType, setInstrumentType] = useState('');
+    const [comments, setComments] = useState('');
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
-    const overviewicon = (
-        <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
-        </svg>
-    );
+    const handleReset = () => {
+        if (loading) return;
+        setAmount('');
+        setRefNo('');
+        setInstrumentType('');
+        setComments('');
+        setErrors({});
+    };
 
-    const chaticon = (
-        <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-        </svg>
-    );
+    const handleSubmit = async () => {
+        if (loading) return;
 
-    const sidebarLinks = [
-        { name: "Dashboard", path: "/dashboard", icon: dashboardicon },
-        { name: "Overview", path: "/overview", icon: overviewicon },
-        { name: "Chat", path: "/chat", icon: chaticon },
-    ];
+        const newErrors = {};
+        if (!amount) newErrors.amount = 'Amount is required';
+        if (!refNo.trim()) newErrors.refNo = 'Reference Number is required';
+        if (!instrumentType) newErrors.instrumentType = 'Instrument Type is required';
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length === 0) {
+            setLoading(true);
+            const payload = {
+                transaction_ref_no: refNo.trim(),
+                transaction_mode: instrumentType,
+                transaction_amount: parseFloat(amount),
+                transaction_source: 'crm',
+                bank: 'nsdl',
+                product: 'topup'
+            };
+
+            try {
+                const data = await addNsdlFloat(payload);
+                if (data.statuscode === 'S001') {
+                    toast.success('Money added to EMD float successfully!');
+                    handleReset();
+                } else {
+                    toast.error(`Failed to add money: ${data.message || 'Unknown error'}`);
+                }
+            } catch (error) {
+                toast.error('Failed to submit. Please try again later.');
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+    };
 
     return (
-        <>
-            <div className="flex items-center justify-between px-4 md:px-8 border-b border-gray-300 py-3 bg-white transition-all duration-300">
-                <a>
-                    <img className="h-9" src={Dvaralogo} alt="dummyLogoColored" />
-                </a>
-                <div className="flex items-center gap-5 text-gray-500">
-                    <p>Hi! Admin</p>
-                    <button className='border rounded-full text-sm px-4 py-1'>Logout</button>
+        <div className="flex h-screen">
+            <ToastContainer position="top-center" autoClose={3000} />
+
+            {/* Sidebar */}
+            <div className="w-64 bg-white border-r p-4">
+                <img src={Dvaralogo} alt="Logo" className="h-10 mb-6" />
+                <div className="flex flex-col gap-2">
+                    <div
+                        onClick={() => setActiveTab('nsdl')}
+                        className={`cursor-pointer px-3 py-2 rounded ${activeTab === 'nsdl' ? 'bg-indigo-100 font-semibold border-l-4 border-indigo-600 text-indigo-700' : 'hover:bg-gray-100 text-indigo-600'}`}
+                    >
+                        📄 NSDL
+                    </div>
+                    <div
+                        onClick={() => setActiveTab('goldLoan')}
+                        className={`cursor-pointer px-3 py-2 rounded ${activeTab === 'goldLoan' ? 'bg-indigo-100 font-semibold border-l-4 border-indigo-600 text-indigo-700' : 'hover:bg-gray-100 text-indigo-600'}`}
+                    >
+                        🪙 Gold Loan
+                    </div>
                 </div>
             </div>
-            <div className="md:w-64 w-16 border-r h-[550px] text-base border-gray-300 pt-4 flex flex-col transition-all duration-300">
-                {sidebarLinks.map((item, index) => (
-                    <a href={item.path} key={index}
-                        className={`flex items-center py-3 px-4 gap-3 
-                            ${index === 0 ? "border-r-4 md:border-r-[6px] bg-indigo-500/10 border-indigo-500 text-indigo-500"
-                                : "hover:bg-gray-100/90 border-white text-gray-700"
-                            }`
-                        }
-                    >
-                        {item.icon}
-                        <p className="md:block hidden text-center">{item.name}</p>
-                    </a>
-                ))}
-            </div>
-        </>
-    )
-}
 
-export default Dashboard
+            {/* Main Content */}
+            <div className="flex-1 flex flex-col">
+                {/* Top Bar */}
+                <div className="flex justify-end items-center px-6 py-4 border-b bg-white">
+                    <div className="text-gray-700 mr-4">Hi! {crm_user_mobile}</div>
+                    <button className="bg-black text-white px-4 py-2 rounded">Logout</button>
+                </div>
+
+                {/* Content Area */}
+                <div className="flex-1 overflow-auto">
+                    {activeTab === 'nsdl' && (
+                        <>
+                            <NSDLSubTabs
+                                activeNsdlSubTab={activeNsdlSubTab}
+                                setActiveNsdlSubTab={setActiveNsdlSubTab}
+                            />
+
+
+                            <div className="p-4">
+                                {activeNsdlSubTab === 'moneyAdded' && (
+                                    <MoneyAddedEMDFloat
+                                        amount={amount}
+                                        setAmount={setAmount}
+                                        refNo={refNo}
+                                        setRefNo={setRefNo}
+                                        instrumentType={instrumentType}
+                                        setInstrumentType={setInstrumentType}
+                                        comments={comments}
+                                        setComments={setComments}
+                                        errors={errors}
+                                        handleSubmit={handleSubmit}
+                                        handleReset={handleReset}
+                                        loading={loading}
+                                    />
+                                )}
+
+                                {activeNsdlSubTab === 'instakits' && <NSDLInstakitsForm />}
+                            </div>
+                        </>
+                    )}
+
+                    {activeTab === 'goldLoan' && (
+                        <div className="p-6">
+                            <h2 className="text-xl font-semibold">Gold Loan Leads</h2>
+                            <p className="text-gray-500">This section is under construction.</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Dashboard;

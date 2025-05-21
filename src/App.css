@@ -38,3 +38,11 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Remove number input arrows for Chrome, Safari, Edge, Opera */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
