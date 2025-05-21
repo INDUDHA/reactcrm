@@ -100,7 +100,7 @@ const Dashboard = () => {
                 {/* Top Bar */}
                 <div className="flex justify-end items-center px-6 py-4 border-b bg-white">
                     <div className="text-gray-700 mr-4">Hi! {crm_user_mobile}</div>
-                    <button className="bg-black text-white px-4 py-2 rounded">Logout</button>
+                    <button className="bg-indigo-400 text-white px-4 py-2 rounded">Logout</button>
                 </div>
 
                 {/* Content Area */}

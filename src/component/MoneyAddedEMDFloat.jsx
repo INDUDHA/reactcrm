@@ -26,7 +26,7 @@ const MoneyAddedEMDFloat = ({
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className={`border px-3 py-2 rounded w-full no-spinner ${errors.amount ? 'border-red-500' : ''}`}
+                    className={`border px-3 py-2 rounded w-full bg-white no-spinner ${errors.amount ? 'border-red-500' : ''}`}
                     placeholder="Enter amount"
                     disabled={loading}
                 />
@@ -39,7 +39,7 @@ const MoneyAddedEMDFloat = ({
                     type="text"
                     value={refNo}
                     onChange={(e) => setRefNo(e.target.value)}
-                    className={`border px-3 py-2 rounded w-full ${errors.refNo ? 'border-red-500' : ''}`}
+                    className={`border bg-white px-3 py-2 rounded w-full ${errors.refNo ? 'border-red-500' : ''}`}
                     placeholder="Enter reference no"
                     disabled={loading}
                 />
@@ -53,7 +53,7 @@ const MoneyAddedEMDFloat = ({
                 <select
                     value={instrumentType}
                     onChange={(e) => setInstrumentType(e.target.value)}
-                    className={`border px-3 py-2 rounded w-full ${errors.instrumentType ? 'border-red-500' : ''}`}
+                    className={`border bg-white px-3 py-2 rounded w-full ${errors.instrumentType ? 'border-red-500' : ''}`}
                     disabled={loading}
                 >
                     <option value="">Select an option</option>
@@ -70,7 +70,7 @@ const MoneyAddedEMDFloat = ({
                     type="text"
                     value={comments}
                     onChange={(e) => setComments(e.target.value)}
-                    className="border px-3 py-2 rounded w-full"
+                    className="border bg-white px-3 py-2 rounded w-full"
                     placeholder="Enter comments"
                     disabled={loading}
                 />

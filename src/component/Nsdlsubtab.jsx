@@ -17,10 +17,10 @@ const NSDLSubTabs = ({ activeNsdlSubTab, setActiveNsdlSubTab }) => {
         <button
           key={id}
           onClick={() => setActiveNsdlSubTab(id)}
-          className={`inline-block px-1 py-0.25 text-[7px] rounded min-w-max ${
+          className={`inline-block px-4 py-4 text-[13px] font-semibold rounded min-w-max ${
             activeNsdlSubTab === id
-              ? "bg-black text-white font-semibold"
-              : "bg-gray-200 text-black hover:bg-gray-300"
+              ? "bg-indigo-400 text-white font-semibold"
+              : "bg-indigo-400 text-black hover:bg-gray-300"
           }`}
           title={label}
         >

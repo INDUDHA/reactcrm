@@ -26,7 +26,7 @@ const NSDLInstakitsForm = () => {
                     type="text"
                     value={kitId}
                     onChange={(e) => setKitId(e.target.value)}
-                    className="border px-3 py-2 rounded w-full"
+                    className="border bg-white px-3 py-2 rounded w-full"
                     placeholder="Enter Kit ID"
                 />
             </div>
@@ -36,7 +36,7 @@ const NSDLInstakitsForm = () => {
                     type="text"
                     value={remarks}
                     onChange={(e) => setRemarks(e.target.value)}
-                    className="border px-3 py-2 rounded w-full"
+                    className="border bg-white px-3 py-2 rounded w-full"
                     placeholder="Optional remarks"
                 />
             </div>
