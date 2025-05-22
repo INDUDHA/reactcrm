@@ -10,7 +10,7 @@ import NSDLInstakitsForm from './NSDLInstakitsForm'
 
 
 import { addNsdlFloat } from '../api/apiNSDL';
-
+import AllocationTable from './AllocationTable';
 
 
 // ----------------- Main Dashboard -----------------
@@ -132,6 +132,8 @@ const Dashboard = () => {
                                 )}
 
                                 {activeNsdlSubTab === 'instakits' && <NSDLInstakitsForm />}
+                                   {/* Adding AllocationTable Component */}
+                                {activeNsdlSubTab === "allocation" && <AllocationTable />}
                             </div>
                         </>
                     )}
