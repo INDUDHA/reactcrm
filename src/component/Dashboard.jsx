@@ -102,6 +102,7 @@ const Dashboard = () => {
                 : "hover:bg-gray-100 text-indigo-600"
             }`}
           >
+            {/* added image */}
             <img src={NSDLPng} alt="Logo" className="h-5 w-5" />
             <span>NSDL</span>
           </div>
@@ -114,6 +115,7 @@ const Dashboard = () => {
                 : "hover:bg-gray-100 text-indigo-600"
             }`}
           >
+            {/* added image */}
             <img src={Gold} alt="Logo" className="h-5 w-5" />
             <span>Gold Loan</span>
           </div>
