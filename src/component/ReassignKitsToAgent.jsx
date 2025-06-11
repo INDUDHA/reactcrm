@@ -49,53 +49,55 @@ const ReassignKitsToAgent = () => {
     // Update the table dynamically to reflect the new agent selection
     setKitData((prevData) =>
       prevData.map((kit) =>
-        kit.kit_id === selectedKit.kit_id ? { ...kit, external_agent_id: value } : kit
+        kit.kit_id === selectedKit.kit_id
+          ? { ...kit, external_agent_id: value }
+          : kit
       )
     );
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!selectedKit || !formData.agentId) {
-    console.error("Missing required data.");
-    return;
-  }
-
-  const payload = {
-    kit_id: selectedKit.kit_id,
-    kit_ref_id: selectedKit.kit_ref_id,
-    external_agent_id: formData.agentId,
-  };
-
-console.log("payload inside ===>",payload);
-
-
-  try {
-    const response = await updateKitInventory(payload);
-    console.log("response insdie component:", response);
-
-    if (!response.status) {
-      console.error("API failed:", response.message);
-    } else {
-      console.log("Update successful:", response);
-      setShowModal(false);
+    if (!selectedKit || !formData.agentId) {
+      console.error("Missing required data.");
+      return;
     }
-  } catch (error) {
-    console.error("Update failed:", error);
-  }
-};
 
+    const payload = {
+      kit_id: selectedKit.kit_id,
+      kit_ref_id: selectedKit.kit_ref_id,
+      external_agent_id: formData.agentId,
+    };
+
+    console.log("payload inside ===>", payload);
+
+    try {
+      const response = await updateKitInventory(payload);
+      console.log("response insdie component:", response);
+
+      if (!response.status) {
+        console.error("API failed:", response.message);
+      } else {
+        console.log("Update successful:", response);
+        setShowModal(false);
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div className="p-4">
-      <div className="overflow-x-auto bg-white rounded-lg shadow-md">
-        <h3 className="text-lg font-bold mb-4 text-center text-black bg-gray-100 py-2 rounded">Re-assign Kits to agent</h3>
+    <div className="p-4 relative h-[90vh] overflow-hidden">
+      <div className="overflow-x-auto bg-white rounded-lg shadow-md h-[75vh] overflow-y-auto">
+        <h3 className="text-lg font-bold mb-4 text-center text-black bg-gray-100 py-2 rounded">
+          Re-assign Kits to agent
+        </h3>
         <table className="min-w-full border border-gray-300 bg-white text-md">
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="bg-blue-500 text-white">
               <th className="p-3 border">Created At</th>
               <th className="p-3 border">Kit ID</th>
@@ -154,7 +156,9 @@ console.log("payload inside ===>",payload);
         >
           Prev
         </button>
-        <span className="text-sm font-medium">Page {currentPage} of {totalPages}</span>
+        <span className="text-sm font-medium">
+          Page {currentPage} of {totalPages}
+        </span>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
@@ -166,28 +170,56 @@ console.log("payload inside ===>",payload);
 
       {/* Update Form Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-40 z-10">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold mb-4">Re-assign Kit to Agent</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              Re-assign Kit to Agent
+            </h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-700">Kit Ref ID:</label>
-                <input type="text" name="kitRefId" value={formData.kitRefId} className="w-full p-2 border border-gray-300 rounded" disabled />
+                <input
+                  type="text"
+                  name="kitRefId"
+                  value={formData.kitRefId}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  disabled
+                />
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-700">External Agent ID:</label>
-                <select name="agentId" value={formData.agentId} onChange={handleInputChange} className="w-full p-2 border border-gray-300 rounded-lg bg-white shadow-sm">
+                <label className="block text-gray-700">
+                  External Agent ID:
+                </label>
+                <select
+                  name="agentId"
+                  value={formData.agentId}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border border-gray-300 rounded-lg bg-white shadow-sm"
+                >
                   <option value="">Select an Agent</option>
                   {agentsData.map((agent) => (
-                    <option key={agent.agent_id} value={agent.agent_id}>{agent.agent_name}</option>
+                    <option key={agent.agent_id} value={agent.agent_id}>
+                      {agent.agent_name}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div className="flex justify-between">
-                <button type="button" onClick={() => setShowModal(false)} className="px-6 py-2 bg-red-500 text-white rounded">Close</button>
-                <button type="submit" className="px-4 py-2 bg-indigo-500 text-white rounded">Submit</button>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-6 py-2 bg-red-500 text-white rounded"
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-indigo-500 text-white rounded"
+                >
+                  Submit
+                </button>
               </div>
             </form>
           </div>

@@ -269,9 +269,9 @@ const InterestedLead = () => {
           )}
         </button>
       </div>
-
+      <br></br>
       {/* Filter and Actions */}
-      <div className="flex flex-wrap items-center gap-4 mb-4">
+      <div className="flex flex-wrap items-center gap-4 mb-4 justify-end">
         <input
           type="text"
           placeholder="Filter by mobile no"
@@ -285,7 +285,7 @@ const InterestedLead = () => {
           onClick={resetFilters}
           className="px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white font-semibold"
         >
-          Reset Filters
+          Reset
         </button>
         <button
           onClick={downloadCSV}
@@ -294,12 +294,8 @@ const InterestedLead = () => {
           Download
         </button>
       </div>
-
       {/* Table */}
-      <div
-        className="overflow-x-auto border border-gray-300 rounded-md shadow-md"
-        style={{ maxWidth: "90vw" }}
-      >
+      <div className="overflow-x-auto border border-gray-300 rounded-md shadow-md max-w-full">
         <table className="min-w-full table-fixed border-collapse">
           <thead className="bg-blue-600 text-white">
             <tr>

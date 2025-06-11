@@ -7,8 +7,6 @@ const AccountStatement = () => {
   const [statementData, setStatementData] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // Changed filter keys to custName and dso_name matching API response
   const [filters, setFilters] = useState({ custName: "", dso_name: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
@@ -25,8 +23,6 @@ const AccountStatement = () => {
     setLoading(true);
     try {
       const response = await getStatementDetails(fromDate, toDate);
-      console.log("response ===>", response);
-
       if (
         response?.statuscode === 200 &&
         response.data?.statements?.length > 0
@@ -60,7 +56,6 @@ const AccountStatement = () => {
     setFilters({ custName: "", dso_name: "" });
   };
 
-  // Updated to filter by custName and dso_name
   const filteredData = statementData.filter((item) => {
     const userMatch = item.custName
       ?.toLowerCase()
@@ -106,8 +101,8 @@ const AccountStatement = () => {
           row.date ? new Date(row.date).toLocaleString() : "",
           row.account_no,
           row.ref_id,
-          row.dso_name,     // changed to dso_name
-          row.custName,     // changed to custName
+          row.dso_name,
+          row.custName,
           row.collection_mode,
           row.transaction_mode,
         ]
@@ -125,7 +120,7 @@ const AccountStatement = () => {
 
   return (
     <div className="p-4">
-      <div className="max-w-lg mx-auto bg-gray-100 p-5 rounded-lg mb-6 border border-black">
+      <div className="max-w-lg mx-auto p-5 rounded-lg mb-6 border border-black bg-white">
         <h2 className="text-2xl font-semibold mb-3 text-center">
           Account Statement
         </h2>
@@ -134,7 +129,7 @@ const AccountStatement = () => {
           <div className="mb-4 flex items-center">
             <label
               htmlFor="fromDate"
-              className="font-medium text-gray-00 w-1/3 text-right mr-6"
+              className="font-medium text-gray-700 w-1/3 text-right mr-6"
             >
               From Date: <span className="text-red-500">*</span>
             </label>
@@ -177,10 +172,10 @@ const AccountStatement = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`px-4 py-2 rounded font-semibold w-32 bg-indigo-500 hover:bg-blue-600 text-white ${
+              className={`px-4 py-2 rounded font-semibold w-32 ${
                 loading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600 text-white"
+                  ? "bg-indigo-500 hover:bg-blue-600 cursor-not-allowed"
+                  : "bg-indigo-500 hover:bg-blue-600 text-white"
               }`}
             >
               {loading ? "Loading..." : "Submit"}
@@ -190,52 +185,46 @@ const AccountStatement = () => {
       </div>
 
       {statementData.length > 0 && (
-        <div className="max-w-6xl mx-auto bg-white overflow-x-auto rounded-lg shadow-md">
-          {/* Filters and Download */}
-          <div className="flex flex-wrap items-center justify-between p-4">
-            <div className="flex flex-wrap items-center gap-4">
-              {/* Agent Name filter */}
-              <input
-                type="text"
-                placeholder="Filter by Agent Name"
-                value={filters.dso_name}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    dso_name: e.target.value,
-                  }))
-                }
-                className="border border-black p-2 rounded-md"
-              />
-              {/* User Name filter */}
-              <input
-                type="text"
-                placeholder="Filter by User Name"
-                value={filters.custName}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    custName: e.target.value,
-                  }))
-                }
-                className="border border-black p-2 rounded-md"
-              />
-              <button
-                onClick={resetTableFilters}
-                className="w-32 px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white font-semibold text-center"
-              >
-                Reset
-              </button>
-              <button
-                onClick={() => downloadCSV(filteredData)}
-                className="w-32 px-4 py-2 rounded bg-green-600 hover:bg-green-700 font-semibold text-white text-center"
-              >
-                Download
-              </button>
-            </div>
+        <div className="max-w-6xl mx-auto overflow-x-auto rounded-lg">
+          <div className="flex flex-wrap items-center justify-end p-4 gap-4">
+            <input
+              type="text"
+              placeholder="Filter by Agent Name"
+              value={filters.dso_name}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  dso_name: e.target.value,
+                }))
+              }
+              className="border border-black p-2 rounded-md"
+            />
+            <input
+              type="text"
+              placeholder="Filter by User Name"
+              value={filters.custName}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  custName: e.target.value,
+                }))
+              }
+              className="border border-black p-2 rounded-md"
+            />
+            <button
+              onClick={resetTableFilters}
+              className="w-32 px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white font-semibold"
+            >
+              Reset
+            </button>
+            <button
+              onClick={() => downloadCSV(filteredData)}
+              className="w-32 px-4 py-2 rounded bg-green-600 hover:bg-green-700 font-semibold text-white"
+            >
+              Download
+            </button>
           </div>
 
-          {/* Table */}
           <table className="min-w-full border border-gray-300 bg-white text-md">
             <thead>
               <tr className="bg-blue-500 text-white">
@@ -254,7 +243,7 @@ const AccountStatement = () => {
             </thead>
             <tbody>
               {currentRows.map((item, index) => (
-                <tr key={index} className="bg-white text-gray-700">
+                <tr key={index} className="text-gray-700">
                   <td className="p-3 border">{item.desc || "-"}</td>
                   <td className="p-3 border">{item.credit_amount || "-"}</td>
                   <td className="p-3 border">{item.debit_amount || "-"}</td>
@@ -264,12 +253,12 @@ const AccountStatement = () => {
                   </td>
                   <td className="p-3 border">{item.account_no || "-"}</td>
                   <td className="p-3 border">{item.ref_id || "-"}</td>
-                  {/* Changed to dso_name */}
                   <td className="p-3 border">{item.dso_name || "-"}</td>
-                  {/* Changed to custName */}
                   <td className="p-3 border">{item.custName || "-"}</td>
                   <td className="p-3 border">{item.collection_mode || "-"}</td>
-                  <td className="p-3 border">{item.transaction_mode || "-"}</td>
+                  <td className="p-3 border">
+                    {item.transaction_mode || "-"}
+                  </td>
                 </tr>
               ))}
               {currentRows.length === 0 && (
@@ -285,22 +274,29 @@ const AccountStatement = () => {
             </tbody>
           </table>
 
-          {/* Pagination */}
-          <div className="mt-4 flex justify-center items-center gap-3">
+          <div className="flex justify-center items-center space-x-2 mt-4">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-3 py-1 rounded bg-indigo-500 hover:bg-indigo-600 text-white disabled:bg-gray-400"
+              className={`px-3 py-1 rounded border ${
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  : "bg-white hover:bg-gray-100"
+              }`}
             >
-              Previous
+              Prev
             </button>
-            <span>
+            <span className="text-sm font-medium">
               Page {currentPage} of {totalPages}
             </span>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages || totalPages === 0}
-              className="px-3 py-1 rounded bg-indigo-500 hover:bg-indigo-600 text-white disabled:bg-gray-400"
+              className={`px-3 py-1 rounded border ${
+                currentPage === totalPages || totalPages === 0
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  : "bg-white hover:bg-gray-100"
+              }`}
             >
               Next
             </button>

@@ -115,7 +115,7 @@ const GoldLeadStatus = () => {
           </button>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 justify-end">
           <div className="relative w-1/3">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
             <input
