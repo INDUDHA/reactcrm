@@ -23,15 +23,14 @@ function Login() {
       );
 
       const data = await response.json();
-      console.log("Status", data);
+      console.log("data", data);
 
       if (data.statuscode == 204) {
         console.log("Login successful:", data);
-        // localStorage.setItem("crm_user_mobile", data.crm_user_mobile || mobile);
-        // localStorage.setItem("crm_user_name", data.crm_user_name || "User");
-        // localStorage.setItem("crm_user_id", data.crm_user_id || "");
+         localStorage.setItem("crm_user_mobile", data.crm_user_mobile || "mobile");
+        localStorage.setItem("crm_user_name", data.crm_user_name || "User");
+        localStorage.setItem("crm_user_id", data.crm_user_id || "");
 
-        localStorage.setItem("crm_user_mobile", mobile);
         navigate("/otp"); // Navigate on success
       } else if (data.statuscode == 203) {
         // Show warning or message, stay on page

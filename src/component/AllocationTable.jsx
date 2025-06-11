@@ -26,18 +26,31 @@ const AllocationTable = () => {
     fetchRecords();
   }, []);
 
-  const headers = ["created_at", "kit_ref_id", "kit_card_no", "external_agent_id", "dost_name", "kit_status"];
+  const headers = [
+    "created_at",
+    "kit_ref_id",
+    "kit_card_no",
+    "external_agent_id",
+    "dost_name",
+    "kit_status",
+  ];
 
   const filteredRecords = records.filter((record) =>
     headers.some((header) => {
       const value = record[header];
-      return value && value.toString().toLowerCase().includes(searchTerm.toLowerCase());
+      return (
+        value &&
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      );
     })
   );
 
   const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
   const startIndex = (currentPage - 1) * recordsPerPage;
-  const currentRecords = filteredRecords.slice(startIndex, startIndex + recordsPerPage);
+  const currentRecords = filteredRecords.slice(
+    startIndex,
+    startIndex + recordsPerPage
+  );
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -49,8 +62,8 @@ const AllocationTable = () => {
   const downloadCSV = () => {
     const dataToDownload = searchTerm ? filteredRecords : records; // Download filtered records if search is applied
     const csvHeaders = headers.join(","); // Convert headers to CSV format
-    const csvRows = dataToDownload.map(record =>
-      headers.map(header => `"${record[header] || ''}"`).join(",") // Convert each row to CSV format
+    const csvRows = dataToDownload.map(
+      (record) => headers.map((header) => `"${record[header] || ""}"`).join(",") // Convert each row to CSV format
     );
 
     const csvContent = [csvHeaders, ...csvRows].join("\n"); // Join headers and rows
@@ -59,16 +72,20 @@ const AllocationTable = () => {
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = searchTerm ? "filtered_kit_allocation_data.csv" : "kit_allocation_data.csv"; // Change filename based on filter
+    a.download = searchTerm
+      ? "filtered_kit_allocation_data.csv"
+      : "kit_allocation_data.csv"; // Change filename based on filter
     a.click();
     URL.revokeObjectURL(url);
   };
 
   return (
     <div className="p-6 rounded-lg">
-      <div className="flex items-center space-x-3 mb-4">
+      <div className="flex items-center space-x-3 mb-4 justify-end">
         <div className="relative w-1/3">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            🔍
+          </span>
           <input
             type="text"
             placeholder="Search records..."
@@ -107,7 +124,10 @@ const AllocationTable = () => {
               <thead>
                 <tr className="bg-blue-500 text-white text-center">
                   {headers.map((header) => (
-                    <th key={header} className="p-3 border border-gray-300 capitalize">
+                    <th
+                      key={header}
+                      className="p-3 border border-gray-300 capitalize"
+                    >
                       {header.replace(/_/g, " ").toUpperCase()}
                     </th>
                   ))}
@@ -133,7 +153,9 @@ const AllocationTable = () => {
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className={`px-3 py-1 rounded border ${
-                currentPage === 1 ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-white hover:bg-gray-100"
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  : "bg-white hover:bg-gray-100"
               }`}
             >
               Prev
@@ -145,7 +167,9 @@ const AllocationTable = () => {
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
               className={`px-3 py-1 rounded border ${
-                currentPage === totalPages ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-white hover:bg-gray-100"
+                currentPage === totalPages
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  : "bg-white hover:bg-gray-100"
               }`}
             >
               Next

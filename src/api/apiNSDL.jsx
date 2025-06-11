@@ -1,5 +1,4 @@
-// import axios from "axios";
-
+//NSDL => Add NSDL Float
 export const addNsdlFloat = async (payload) => {
   try {
     const response = await fetch(
@@ -20,6 +19,8 @@ export const addNsdlFloat = async (payload) => {
     throw new Error("Network error");
   }
 };
+
+//NSDL => Get Kit Allocation 
 export const getkitallocation = async (payload) => {
   try {
     const response = await fetch(
@@ -40,6 +41,8 @@ export const getkitallocation = async (payload) => {
     throw new Error("Network error");
   }
 };
+
+// NSDL => Get Agent Allocation Summary 
 
 export const getAgentAllocationSummary = async (agentId) => {
   try {
@@ -66,6 +69,7 @@ export const getAgentAllocationSummary = async (agentId) => {
   }
 };
 
+//NSDL => Get Statement Details
 export const getStatementDetails = async (
   fromDate,
   toDate,
@@ -107,6 +111,7 @@ export const getStatementDetails = async (
   }
 };
 
+//NSDL => Update Kit Inventory
 export const updateKitInventory = async (payload) => {
   console.log("Payload=====>", payload);
 
@@ -117,7 +122,7 @@ export const updateKitInventory = async (payload) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        source: "QnlQYXNzSW50ZXJuYWxSZXE=", // Match Postman exactly
+        source: "QnlQYXNzSW50ZXJuYWxSZXE=",
       },
       body: JSON.stringify(payload),
     });
@@ -142,6 +147,7 @@ export const updateKitInventory = async (payload) => {
   }
 };
 
+//NSDL => Get NSDL kits
 export const getNsdlKits = async () => {
   const url = "https://sparkapi-stage.dvaramoney.com/c360/api/v1/getNsdlKits";
 
@@ -167,6 +173,7 @@ export const getNsdlKits = async () => {
   }
 };
 
+//NSDL => Add NSDL Kits
 export const addNsdlKits = async (payload) => {
   const url = "https://sparkapi-stage.dvaramoney.com/c360/api/v1/addNsdlKits";
 
@@ -193,7 +200,7 @@ export const addNsdlKits = async (payload) => {
   }
 };
 
-//Gold loan
+//Gold loan => Get Gold Loan Leads
 
 export const getGoldLoanLeads = async (
   fromDate = "",
@@ -241,6 +248,8 @@ export const getGoldLoanLeads = async (
     throw new Error("Network error or invalid response format.");
   }
 };
+
+//Gold Loan => Fetch Gold Loan Leads
 export const fetchGoldLoanLeads = async (leadStatus = "interested") => {
   if (!leadStatus) {
     console.warn("No lead status provided. Using default: 'interested'");

@@ -48,7 +48,7 @@ const AssignKitsToAgent = () => {
   return (
     <div className="p-6 bg-white rounded shadow">
       <h2 className="text-lg font-bold mb-6 text-center text-black bg-gray-100 py-2 rounded">
-        NSDL Instakit Form
+        Assign Kits to Agents
       </h2>
 
       <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
